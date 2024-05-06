@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  nginx:
+    container_name: nginx-c
+    depends_on:
+      - node1
+      - node2
+      - node3
+    build:
+      context: ./nginx
+    ports:
+      - "9000:80"
+
+  node1:
+    image: loadbalancer-node1
+    container_name: node1-c
+    environment:
+      - PORT=3000
+    build:
+      context: ./node1
+    ports:
+      - "3000:3000"
+
+  node2:
+    image: loadbalancer-node2
+    container_name: node2-c
+    build:
+      context: ./node2
+    ports:
+      - "4000:3000"
+    environment:
+      - PORT=3000
+
+  node3:
+    image: loadbalancer-node3
+    container_name: node3-c
+    build:
+      context: ./node3
+    ports:
+      - "5000:3000"
+    environment:
+      - PORT=3000

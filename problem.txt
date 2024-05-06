@@ -1,0 +1,23 @@
+In your current configuration, node1, node2, and node3 are all trying to expose port 3002 to the host machine. Docker doesn't allow multiple containers to publish the same port to the host. This leads to a race condition where whichever container starts first gets to use port 3002, and subsequent containers trying to use the same port fail.
+
+The Solution:
+
+Here's how you can fix the port conflict and ensure each node runs on a distinct port:
+
+Unique Port Mapping for Each Node:
+
+In the ports section of your docker-compose.yml file, assign a unique host port for each node service. For example:
+node1:
+    # ... other configurations
+    ports:
+        - "3004:3001"  # Map host port 3004 to container port 3001 (node1)
+
+node2:
+    # ... other configurations
+    ports:
+        - "3005:3002"  # Map host port 3005 to container port 3002 (node2)
+
+node3:
+    # ... other configurations
+    ports:
+        - "3006:3003"  # Map host port 3006 to container port 3003 (node3
